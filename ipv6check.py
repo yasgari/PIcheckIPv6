@@ -6,11 +6,6 @@ import sys
 import pandas as pd
 
 
-#Create global vars for Prime
-primeIP = sys.argv[1]
-primeUser = sys.argv[2]
-primePass = sys.argv[3]
-
 
 #Disable SSL warnings
 urllib3.disable_warnings()
@@ -20,6 +15,16 @@ urllib3.disable_warnings()
 #Query below is based off of this api https://developer.cisco.com/site/prime-infrastructure/documents/api-reference/rest-api-v3-6/v4/data/BulkSanitizedConfigArchives@_docs/
 
 def checkV6():
+    #Check args
+    if len(sys.argv) != 4:
+        return print("Please enter Prime's IP, Username and Password in that order, separated by a space. Ex/ 'python3 ipv6check.py 10.10.10.10 user123 pass 123'")
+
+    #Create vars for Prime
+    primeIP = sys.argv[1]
+    primeUser = sys.argv[2]
+    primePass = sys.argv[3]
+    
+
     #retrieve prime configs with prime api
     base_uri = 'https://' + primeIP
     user = primeUser
@@ -28,6 +33,8 @@ def checkV6():
     
 
     url = base_uri + rest_path
+    
+    
     response = requests.get(url, auth=(user, password), verify=False)
     response = json.loads(response.content)
     configs = response['queryResponse']['entityId']
@@ -55,7 +62,7 @@ def checkV6():
                     configData = file['data']
                     
                     #CHECK IF V6 config is here!! 
-                    if 'ipv6 enable' or 'ipv6 interface' not in configData:
+                    if 'ipv6 enable' or 'ipv6 interface' or 'ipv6 address' not in configData:
                         devicesWithNov6.append({'deviceName': deviceName, 'deviceIp': deviceIP, 'config': configData})
                         print('Device: ', deviceName, ' IP: ', deviceIP, ' does not have IPv6 in its running config \n')
     

@@ -1,5 +1,5 @@
 # PIcheckIPv6
-Query Cisco Prime Infra for device configs and check to see if IPv6 is enabled. If the script finds running configs (sanitized) that do not have IPv6 enabled, it will export the device name, IP, and sanitized config to an Excel doc called 'deviceInfo.xlsx' in the same folder as the script.
+Query Cisco Prime Infra for device configs (running configs) and check to see if IPv6 is enabled (checks for 'ipv6 enable', 'ipv6 interface' and 'ipv6 address' commands in config). If the script finds running configs (sanitized) that do not have IPv6 enabled, it will export the device name, IP, and sanitized config to an Excel doc called 'deviceInfo.xlsx' in the same folder as the script.
 
 
 ## To use the script:
